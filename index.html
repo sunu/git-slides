@@ -7,18 +7,21 @@
         <title>reveal.js - The HTML Presentation Framework</title>
 
         <link rel="stylesheet" href="css/reveal.min.css">
-        <link rel="stylesheet" href="css/theme/default.css" id="theme">
+        <link rel="stylesheet" href="css/theme/sky.css" id="theme">
         <link rel="stylesheet" href="http://yandex.st/highlightjs/7.3/styles/default.min.css">
 
         <!-- For syntax highlighting -->
-        <link rel="stylesheet" href="lib/css/zenburn.css">
+        <link rel="stylesheet" href="lib/css/googlecode.css">
 
         <style>
             code#git {
-                color: #E6DB74;
+                color: #D25252;
             }
             #def {
                 color: #7FB347;
+                text-align:center;
+            }
+            #center {
                 text-align:center;
             }
         </style>
@@ -45,44 +48,30 @@
                     <img src="http://qaidjacobs.com/wp-content/uploads/2012/11/Git_icon.svg_.png" />
                     
                     <p>
-                        <small>A short description on how to use git to improve your day-to-day development tasks</small>
+                        <small>How to use git to improve your day-to-day development tasks</small>
                     </p>
                 </section>
 
                 <section>
                     <section>
-                        <h2>Git Basics</h2>
-                    </section>
-                </section>
-                <section>
-                    <section>
-                        <h2>Definitions</h3>
-                    </section>
-
-                    <section>
-                        <h3>Blob</h3>
-                        <p id="def">
-                            the contents of a file
-                        </p>
-                    </section>
-
-                    <section>
-                        <h3>Tree</h3>
-                        <p id="def">
-                            a directory of blobs or other trees
-                        </p>
+                        <h2>Basics</h3>
                     </section>
 
                     <section>
                         <h3>Commit</h3>
                         <ul style="list-style-type: none;">
-                            <li id="def">A tree</li>
+                            <li id="def">A list of changes</li>
                             <li id="def">Zero or more parent commits</li>
                             <li id="def">A message</li>
                         </ul>
                         <p>
-                            Commits can be viewed with the <code id="git">git log</code> command.
+                            Commits can be created with the <code id="git">commit</code> command and viewed with the <code id="git">log</code> command.
                         </p>
+
+                        <aside class="notes">
+                            Commits also have a SHA-1 name, which are 40 characters long, but can be abbreviated to anything
+                            longer than 4 characters.
+                        </aside>
                     </section>
 
                     <section>
@@ -91,8 +80,8 @@
                             A pointer to a commit
                         </p>
                         <p>
-                            Branches can be managed with the <code id="git">git branch</code> command and
-                            changed with the <code id="git">git checkout</code> command.
+                            Branches can be managed with the <code id="git">branch</code> command and
+                            changed with the <code id="git">checkout</code> command.
                         </p>
                     </section>
 
@@ -102,18 +91,19 @@
                             The location of another git repository
                         </p>
                         <p>
-                            Remotes can be managed with the <code id="git">git remote</code> command.
+                            Remotes can be managed with the <code id="git">remote</code> command and synchronized
+                            with the commands <code id="git">fetch</code>, <code id="git">pull</code>, and <code id="git">push</code>.
                         </p>
                     </section>
 
                     <section>
                         <h3>Head</h3>
                         <p id="def">
-                            A pointer to the current commit
+                            A pointer to the current branch
                         </p>
                         <p>
                             The <code id="git">HEAD</code> behaves like a branch, and is moved 
-                            by the <code id="git">git checkout</code> command.
+                            by the <code id="git">checkout</code> command.
                         </p>
                     </section>
 
@@ -123,7 +113,7 @@
                             A cache between the working directory and the repository
                         </p>
                         <p>
-                            The index can be modified with the 
+                            The index can be modified with the commands <code id="git">add</code> and <code id="git">reset</code>.
                     </section>
 
                     <section>
@@ -147,13 +137,25 @@
                     </section>
 
                     <section>
+                        <h3>Init</h3>
+                        <p>
+                            Initializes a new git repository in the current directory.
+                        </p>
+
+                        <pre><code>
+$ git init
+Initialized empty Git repository in /Users/zeal/git/.git/
+                        </code></pre>
+                    </section>
+
+                    <section>
                         <h3>Clone</h3>
                         <p>
                             Copies the contents of a repository
                         </p>
                         <pre><code data-trim>
-$ git clone git@github.com:zfjagann/ProjectA.git
-Cloning into 'ProjectA'...
+$ git clone git@github.com:zfjagann/Demo.git
+Cloning into 'Demo'...
 remote: Counting objects: 53, done.
 remote: Compressing objects: 100% (32/32), done.
 remote: Total 53 (delta 9), reused 49 (delta 5)
@@ -167,7 +169,7 @@ Resolving deltas: 100% (9/9), done.
                         <p>
                             Adds changes to the index
                         </p>
-                        <pre><code>$ git add changed-file</code></pre>
+                        <pre><code>$ git add updated-file</code></pre>
                     </section>
 
                     <section>
@@ -200,36 +202,22 @@ $ git commit -m 'Added updated-file'
                     </section>
 
                     <section>
-                        <h3>Push</h3>
+                        <h3>Log</h3>
                         <p>
-                            Pushes new commits on a branch to a remote
+                            Lists a history of commits in the repository.
                         </p>
                         <pre><code>
-$ git push origin master
-Counting objects: 4, done.
-Delta compression using up to 8 threads.
-Compressing objects: 100% (2/2), done.
-Writing objects: 100% (3/3), 276 bytes, done.
-Total 3 (delta 1), reused 0 (delta 0)
-To git@github.sky:zeal/ProjectA.git
-   0c73cb9..1797f98  master -> master
-                        </code></pre>
-                    </section>
+$ git log
+commit fb61a552913bf97de6055c823bafb463375f3492
+Author: zeal &lt;zeal@skybox.com&gt;
+Date:   Wed Jun 12 18:26:59 2013 -0700
 
-                    <section>
-                        <h3>Fetch</h3>
-                        <p>
-                            Synchronizes the local repository with a remote repository
-                        </p>
-                        <pre><code>
-$ git fetch
-remote: Counting objects: 3, done.
-remote: Compressing objects: 100% (2/2), done.
-remote: Total 2 (delta 1), reused 1 (delta 0)
-Unpacking objects: 100% (2/2), done.
-From github.sky:zeal/ProjectA
-   1797f98..858ec06  master     -> origin/master
+    Added readme.
                         </code></pre>
+
+                        <aside class="notes">
+                            Can do some amazing stuff with log and fancy formatting.
+                        </aside>
                     </section>
                 </section>
 
@@ -241,11 +229,304 @@ From github.sky:zeal/ProjectA
                     <section>
                         <h3>Creating a branch</h3>
                         <p>
-                            Use <code id="git">git checkout</code> to create a new branch.
+                            Use <code id="git">branch</code> to create a new branch.
                         </p>
                         <pre><code>
-$ git checkout -b my-branch
-Switched to a new branch 'my-branch'
+$ git branch feature-branch
+                        </code></pre>
+                        <pre><code>
+* fb61a55 - Added readme. (HEAD, feature-branch, master)
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Switching branches</h3>
+                        <p>
+                            Use <code id="git">checkout</code> to change branches.
+                        </p>
+                        <p>
+                            <small><code id="git">checkout -b</code> is an alias that will create and switch to a new branch</small>
+                        </p>
+                        <pre><code>
+$ git checkout feature-branch
+Switched to branch 'feature-branch'
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Commit into a branch</h3>
+                        <p>
+                            When changes are committed, the are committed to <code id="git">HEAD</code>.
+                        </p>
+                        <pre><code>
+$ git commit -m 'Added a new feature.'
+[my-branch c4dcc14] Added a new feature.
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 feature.rb
+                        </code></pre>
+                        <pre><code>
+* c4dcc14 - Added a new feature. (HEAD, feature-branch)
+* fb61a55 - Added readme. (master)
+                        </code></pre>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h3>Diverging</h3>
+                        <p>
+                            When changes are committed into two branches independently, the branches diverge.
+                        </p>
+                        <pre><code>
+$ git checkout master
+$ git add quick-fix.rb
+$ git commit -m 'Added a quick fix.'
+[master 127d4e1] Added a quick fix.
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 quick-fix.rb
+                        </code></pre>
+                        <pre><code>
+* 127d4e1 - Added a quick fix. (HEAD, master)
+| * c4dcc14 - Added a new feature. (feature-branch)
+|/
+* fb61a55 - Added readme.
+                        </code></pre>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h3>Converging</h3>
+                        <p>
+                            There are two ways to join branches:
+                        </p>
+                        <ul style="list-style-type: none;">
+                            <li id="center"><code id="git">merge</code></li>
+                            <li id="center"><code id="git">rebase</code></li>
+                        </ul>
+                    </section>
+                </section>
+                <section>
+                    <section>
+                        <h3>Merge</h3>
+                        <p>
+                            A merge joins the two diverged tree segments with a new commit combining their changes.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3>Merge in action</h3>
+                        <p>
+                            <small>Before</small>
+                            <pre><code>
+* 127d4e1 - Added a quick fix. (HEAD, master)
+| * c4dcc14 - Added a new feature. (feature-branch)
+|/
+* fb61a55 - Added readme.
+                            </code></pre>
+                        </p>
+                        <pre><code>
+$ git checkout master
+$ git merge feature-branch
+Merge made by the 'recursive' strategy.
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 feature.rb
+                        </code></pre>
+                        <p>
+                            <small>After</small>
+                            <pre><code>
+*   aaac857 - Merge branch 'feature-branch' (HEAD, master)
+|\
+| * c4dcc14 - Added a new feature. (feature-branch)
+* | 127d4e1 - Added a quick fix.
+|/
+* fb61a55 - Added readme.
+                            </code></pre>
+                        </p>
+
+                        <aside class="notes">
+                            Merge commits muddle history, and are difficult to read.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h3>Fast Forward</h3>
+                        <p>
+                            If one of the tree segments doesn't contain changes the merge is called a
+                            <code id="git">fast-forward</code>.
+                        </p>
+                        <pre><code>
+$ git checkout feature-branch
+$ git merge master
+Updating c4dcc14..aaac857
+Fast-forward
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 quick-fix.rb
+                        </code></pre>
+                        <pre><code>
+*   aaac857 - Merge branch 'feature-branch' (HEAD, feature-branch, master)
+|\
+| * c4dcc14 - Added a new feature.
+* | 127d4e1 - Added a quick fix.
+|/
+* fb61a55 - Added readme.
+                        </code></pre>
+
+                        <aside class="notes">
+                            This occurs when the common ancestor of two commits is one of the two commits.
+                            A fast-forward is the ideal type of merge, where one side can simply be moved forward in the history.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h3>Rebase</h3>
+                        <p>
+                            A <code id="git">rebase</code> will replay history from one branch on top of another.
+                        </p>
+
+                    </section>
+
+                    <section>
+                        <h3>Rebase in action</h3>
+                        <p>
+                            <small>Before</small>
+                            <pre><code>
+* 127d4e1 - Added a quick fix. (master)
+| * c4dcc14 - Added a new feature. (HEAD, feature-branch)
+|/
+* fb61a55 - Added readme.
+                            </code></pre>
+                        </p>
+                        <pre><code>
+$ git checkout feature-branch
+$ git rebase master
+First, rewinding head to replay your work on top of it...
+Applying: Added a new feature.
+                        </code></pre>
+                        <p>
+                            <small>After</small>
+                            <pre><code>
+* d44f56b - Added a new feature. (HEAD, feature-branch)
+* 127d4e1 - Added a quick fix. (master)
+* fb61a55 - Added readme. (origin/master)
+                            </code></pre>
+                        </p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h3>Remotes</h3>
+                        <p>
+                        </p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h3>Workflows</h3>
+                        <p>
+                            Git is designed to allow for a variety of ways of using it.
+                        </p>
+                    </section>
+
+                    <section>
+                        <p>
+                            Atlassian has descripts for four common workflows on their
+                            <a href="http://www.atlassian.com/git/workflows#!workflow-overview">workflows page</a>.
+                        </p>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h3>Submodules</h3>
+                        <p>
+                            A submodule is a <br/><span id="def">repoisitory nested within another repository</span>.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3>Creating a Submodule</h3>
+                        <p>
+                            Submodules can be created with the <code id="git">submodule</code> command.
+                        </p>
+                        <pre><code>
+$ git submodule add git@github.com:zfjagann/Demo.git
+Cloning into 'Demo'...
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 3 (delta 0)
+Receiving objects: 100% (3/3), done.
+
+$ git status
+# On branch master
+#
+# Initial commit
+#
+# Changes to be committed:
+#   (use "git rm --cached &lt;file&gt;..." to unstage)
+#
+#   new file:   .gitmodules
+#   new file:   Demo
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Foreach</h3>
+                        <p>
+                            Using the <code id="git">foreach</code> command, you can run a given command in each submodule of the current repository.
+                        </p>
+                        <pre><code>
+$ git submodule foreach git rev-list -n 2 HEAD
+Entering 'Demo'
+d44f56b7831ec44dd087ea499e5896c5d85475df
+127d4e1e43ba59ba10190b1716dfa6975086952e
+                        </code></pre>
+
+                        <aside class="notes">
+                            This is <b>extremely useful</b> and can be used to branch all projects in a group.
+                            Also, the --recursive flag allows for nested submodules.
+                        </aside>
+                    </section>
+                </section>
+
+                <section>
+                    <section>
+                        <h2>Aliases</h2>
+                        <p>
+                            Aliases can be used to shorted long commands.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h2>Alias Example</h2>
+                        <p>
+                            The command to produce the branch graphs was this:
+                            <pre><code>
+git --no-pager log --graph --abbrev-commit --decorate --date=re    lative --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset)%C(bo    ld yellow)%d%C(reset)' --all
+                            </code></pre>
+                            but was shortened using an alias to:
+                            <pre><code>
+git graph
+                            </code></pre>
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3>Common Aliases</h3>
+                        <pre><code>
+ci = commit
+ps = push
+pl = pull --rebase
+all = submodule foreach
+cm = commit -m
+ca = commit -am
+co = checkout
+s = status
+pull = pull --rebase
                         </code></pre>
                     </section>
                 </section>
@@ -253,6 +534,14 @@ Switched to a new branch 'my-branch'
             </div>
 
         </div>
+
+        <!-- ************************************************************************************************* -->
+        <!-- ************************************************************************************************* -->
+        <!-- ************************************************************************************************* -->
+        <!-- ************************************************************************************************* -->
+        <!-- ************************************************************************************************* -->
+        <!-- ************************************************************************************************* -->
+        <!-- ************************************************************************************************* -->
 
         <script src="lib/js/head.min.js"></script>
         <script src="js/reveal.min.js"></script>
