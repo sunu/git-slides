@@ -123,6 +123,7 @@
                             <li id="def">A list of branches</li>
                             <li id="def">A list of remotes</li>
                             <li id="def">An index</li>
+                            <li id="def">A working directory</li>
                             <li id="def">A <code>HEAD</code></li>
                         </ul>
                         <p>
@@ -227,7 +228,7 @@ Date:   Wed Jun 12 18:26:59 2013 -0700
                     </section>
 
                     <section>
-                        <h3>Creating a branch</h3>
+                        <h3>Create a branch</h3>
                         <p>
                             Use <code id="git">branch</code> to create a new branch.
                         </p>
@@ -240,7 +241,7 @@ $ git branch feature-branch
                     </section>
 
                     <section>
-                        <h3>Switching branches</h3>
+                        <h3>Switch branches</h3>
                         <p>
                             Use <code id="git">checkout</code> to change branches.
                         </p>
@@ -415,12 +416,166 @@ Applying: Added a new feature.
                             </code></pre>
                         </p>
                     </section>
+
+                    <section>
+                        <h3>Using rebase</h3>
+                        <p>
+                            Rebase <b style="color:red;">destructively</b> changes your commit history, so can be dangerous to use.
+                        </p>
+                        <p>
+                            <b>Do not</b> rebase commits that have been pushed to a remote.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3>Interactive Rebase</h3>
+                        <p>
+                            The <code id="git">rebase</code> command has an interactive mode that allows for manipulating commits in various ways:
+                        </p>
+                        <ul style="list-style-type: none; text-align: center;">
+                            <li>squash</li>
+                            <li>modify</li>
+                            <li>remove</li>
+                            <li>split</li>
+                        </ul>
+                    </section>
                 </section>
 
                 <section>
                     <section>
                         <h3>Remotes</h3>
                         <p>
+                            Remotes are how git keeps track of linked repositories.
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3>Remote</h3>
+                        <p>
+                            The remote command can be used to list servers or modify them.
+                        </p>
+                        <pre><code>
+$ git remote
+origin
+$ git remote -v
+origin  git@github.com:zfjagann/Demo.git (fetch)
+origin  git@github.com:zfjagann/Demo.git (push)
+$ git remote add other git@github.com:rpk/Demo.git
+$ git remote -v
+origin  git@github.com:zfjagann/Demo.git (fetch)
+origin  git@github.com:zfjagann/Demo.git (push)
+other   git@github.com:rpk/Demo.git (fetch)
+other   git@github.com:rpk/Demo.git (push)
+$ git rm other
+$ git remote
+origin
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Remote Branches</h3>
+                        <p>
+                            Branches on remotes are represented locally as:<b3>
+                            <code id="git">(remote)/(branch)</code>
+                        </p>
+                        <p>
+                            For example:<b3>
+                            <code id="git">origin/master</code>
+                        </p>
+                    </section>
+
+                    <section>
+                        <h3>Tracking Branches</h3>
+                        <p>
+                            Local branches can be setup to track remote branches.
+                        </p>
+                        <pre><code>
+$ git checkout --track origin/new-branch
+Branch new-branch set up to track remote branch new-branch from origin.
+Switched to a new branch 'new-branch'
+                        </code></pre>
+
+                        <aside class="notes">
+                            Tracking is git's way of making sure that the branches are synchronized.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h3>Push</h3>
+                        <p>
+                            The <code id="git">push</code> command will transfer local commits to a remote repository.
+                        </p>
+                        <pre><code>
+$ git push origin master
+Counting objects: 4, done.
+Delta compression using up to 8 threads.
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (3/3), 269 bytes, done.
+Total 3 (delta 0), reused 0 (delta 0)
+To git@github.com:zfjagann/Demo.git
+   fb61a55..25c1f9f  master -> master
+                        </code></pre>
+
+                        <aside class="notes">
+                            Tracking is git's way of making sure that the branches are synchronized.
+                        </aside>
+                    </section>
+
+                    <section>
+                        <h3>Fetch</h3>
+                        <p>
+                            The <code id="git">fetch</code> command will fetch all commits at each repository to their local remote branches.
+                        </p>
+                        <pre><code>
+$ git fetch
+remote: Counting objects: 34, done.
+remote: Compressing objects: 100% (12/12), done.
+remote: Total 23 (delta 19), reused 15 (delta 11)
+Unpacking objects: 100% (23/23), done.
+From github.com:zfjagann/Demo.git
+   a198ec0..00e78cd  master     -> origin/master
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Pull</h3>
+                        <p>
+                            The <code id="git">pull</code> command will internally do a <code id="git">fetch</code> immediately followed by a <code id="git">merge</code>.
+                        </p>
+                        <pre><code>
+$ git pull origin master
+From ../Demo2
+ * branch            master     -> FETCH_HEAD
+Updating fb61a55..25c1f9f
+Fast-forward
+ 0 files changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 file
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Pull rebase</h3>
+                        <p>
+                            The <code id="git">pull</code> command can be told to do a <code id="git">rebase</code> instead by passing the <code id="git">--rebase</code> argument.
+                        </p>
+                        <pre><code>
+$ git pull --rebase origin master
+remote: Counting objects: 3, done.
+remote: Compressing objects: 100% (1/1), done.
+remote: Total 2 (delta 0), reused 1 (delta 0)
+Unpacking objects: 100% (2/2), done.
+From ../Demo2
+ * branch            master     -> FETCH_HEAD
+First, rewinding head to replay your work on top of it...
+Applying: Added second file.
+                        </code></pre>
+                    </section>
+
+                    <section>
+                        <h3>Fetch vs. Pull</h3>
+                        <p>
+                            The <code id="git">pull</code> command allows for ease of use.<br/>
+                            The <code id="git">fetch</code> command allows for inspection and manual merging of remote changes.
                         </p>
                     </section>
                 </section>
@@ -429,13 +584,13 @@ Applying: Added a new feature.
                     <section>
                         <h3>Workflows</h3>
                         <p>
-                            Git is designed to allow for a variety of ways of using it.
+                            A workflow is a <span id="def">procedure for collaborating on a project with git</span>.
                         </p>
                     </section>
 
                     <section>
                         <p>
-                            Atlassian has descripts for four common workflows on their
+                            Atlassian has descriptions for four common workflows on their
                             <a href="http://www.atlassian.com/git/workflows#!workflow-overview">workflows page</a>.
                         </p>
                     </section>
@@ -491,42 +646,79 @@ d44f56b7831ec44dd087ea499e5896c5d85475df
                             Also, the --recursive flag allows for nested submodules.
                         </aside>
                     </section>
+
+                    <section>
+                        <h3>Foreach</h3>
+                        <p>
+                            Using the <code id="git">foreach</code> command, you can run a given command in each submodule of the current repository.
+                        </p>
+                        <pre><code>
+$ git submodule foreach git rev-list -n 2 HEAD
+Entering 'Demo'
+d44f56b7831ec44dd087ea499e5896c5d85475df
+127d4e1e43ba59ba10190b1716dfa6975086952e
+                        </code></pre>
+
+                        <aside class="notes">
+                            This is <b>extremely useful</b> and can be used to branch all projects in a group.
+                            Also, the --recursive flag allows for nested submodules.
+                        </aside>
+                    </section>
                 </section>
 
                 <section>
                     <section>
-                        <h2>Aliases</h2>
+                        <h2>Cool Git Features</h2>
+                    </section>
+                    <section>
+                        <h3>Alias</h3>
                         <p>
                             Aliases can be used to shorted long commands.
                         </p>
+
+                        <aside class="notes">
+                            Similar to bash aliases.
+                        </aside>
                     </section>
 
                     <section>
-                        <h2>Alias Example</h2>
+                        <h3>Bisect</h3>
                         <p>
-                            The command to produce the branch graphs was this:
-                            <pre><code>
-git --no-pager log --graph --abbrev-commit --decorate --date=re    lative --format=format:'%C(bold blue)%h%C(reset) - %C(white)%s%C(reset)%C(bo    ld yellow)%d%C(reset)' --all
-                            </code></pre>
-                            but was shortened using an alias to:
-                            <pre><code>
-git graph
-                            </code></pre>
+                            Bisect is a tool to binary-search through bash history to find the cause of a bug.
                         </p>
+
+                        <aside class="notes">
+                            Suppose you know a feature is broken, and you know it worked 6 months ago.
+                            Bisect will allow you to binary-search through the history to find the commit that caused the bug.
+                        </aside>
                     </section>
 
                     <section>
-                        <h3>Common Aliases</h3>
+                        <h3>Log</h3>
+                        <p>
+                            The <code id="git">log</code> command can be used to print pretty branch graphs.
+                        </p>
                         <pre><code>
-ci = commit
-ps = push
-pl = pull --rebase
-all = submodule foreach
-cm = commit -m
-ca = commit -am
-co = checkout
-s = status
-pull = pull --rebase
+$ git log --graph --oneline
+*   e58a2a2 Merge branch 'master' of git@github.sky:DataSystems/JanusCommon.git
+|\
+| * 17348c7 fixing broken migration
+| * 1e23c55 [Janus-683] flattened camera into collection
+| * 031b1c1 [JANUS-115] Added resource for reserving SAWs.
+* |   051ded6 Merge branch 'master' of git@github.sky:DataSystems/JanusCommon.git
+|\ \
+| |/
+| * f4f6ced [JANUS-686] Updated window generator to generate SkyNode windows.
+| * 71ae40f Updated pkg file to include populateGroundStations
+| * ae31ec8 Correct customer Ids
+| *   4a54f3b Merge branch 'saw_windows'
+| |\
+| | * 23f7001 Renamed populate script.
+* | | 8292b66 [NEXUS-6] WIP
+|/ /
+* | 709e857 [NEXUS-6] WIP on sending SkyNode Blackouts Event JSON from Janus to Nexus
+* | 3609edd [NEXUS-6] configuring TELNotifier to pass SkyNode Blackout Window info to Nexus
+* |   42fc224 Merge branch 'master' of git@github.sky:DataSystems/JanusCommon.git
                         </code></pre>
                     </section>
                 </section>
